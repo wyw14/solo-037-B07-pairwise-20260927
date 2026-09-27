@@ -17,7 +17,7 @@ func NewReflectionWindow(run model.RunID, revision model.RevisionID) ReflectionW
 
 func (w ReflectionWindow) Add(revision model.RevisionID, samples int) ReflectionWindow {
     if w.Revision != revision {
-        return ReflectionWindow{Run: w.Run, Revision: revision, Samples: samples}
+        return ReflectionWindow{Run: w.Run, Revision: revision, Samples: samples, Calibrated: samples >= 3}
     }
     w.Samples += samples
     w.Calibrated = w.Samples >= 3
