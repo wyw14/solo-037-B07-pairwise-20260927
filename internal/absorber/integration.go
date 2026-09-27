@@ -8,10 +8,11 @@ import (
 )
 
 func CalibrateFromProbe(controller *Controller, samples []model.Evidence, revision model.RevisionID) bool {
-    if len(probe.SourceIDs(samples)) == 0 {
+    current := probe.FilterRevision(samples, revision)
+    if len(probe.SourceIDs(current)) == 0 {
         return false
     }
-    return controller.AddReflection(samples[0].Run, revision, len(samples)).Valid(revision)
+    return controller.AddReflection(current[0].Run, revision, len(current)).Valid(revision)
 }
 
 func ActivateAfterBoundary(controller *Controller, at time.Time) error {

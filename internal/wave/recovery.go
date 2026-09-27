@@ -17,13 +17,15 @@ func NewReflectionWindow(run model.RunID, revision model.RevisionID) ReflectionW
 
 func (w ReflectionWindow) Add(revision model.RevisionID, samples int) ReflectionWindow {
     if w.Revision != revision {
-        return ReflectionWindow{Run: w.Run, Revision: revision, Samples: samples}
+        return ReflectionWindow{Run: w.Run, Revision: revision, Samples: samples, Calibrated: samples >= requiredSamples}
     }
     w.Samples += samples
-    w.Calibrated = w.Samples >= 3
+    w.Calibrated = w.Samples >= requiredSamples
     return w
 }
 
+const requiredSamples = 3
+
 func (w ReflectionWindow) Valid(revision model.RevisionID) bool {
-    return w.Revision == revision && w.Samples >= 3 && w.Calibrated
+    return w.Revision == revision && w.Samples >= requiredSamples && w.Calibrated
 }
